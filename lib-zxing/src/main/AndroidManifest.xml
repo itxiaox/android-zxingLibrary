@@ -2,13 +2,11 @@
     package="com.uuzuche.lib_zxing">
 
     <application
-        android:allowBackup="true"
-        >
+        android:allowBackup="true">
 
         <activity
             android:configChanges="orientation|keyboardHidden"
             android:name="com.uuzuche.lib_zxing.activity.CaptureActivity"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             ></activity>

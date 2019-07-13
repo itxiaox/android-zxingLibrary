@@ -23,7 +23,8 @@ public class CaptureActivity extends AppCompatActivity {
         setContentView(R.layout.camera);
         CaptureFragment captureFragment = new CaptureFragment();
         captureFragment.setAnalyzeCallback(analyzeCallback);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_zxing_container, captureFragment).commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_zxing_container, captureFragment).commit();
         captureFragment.setCameraInitCallBack(new CaptureFragment.CameraInitCallBack() {
             @Override
             public void callBack(Exception e) {

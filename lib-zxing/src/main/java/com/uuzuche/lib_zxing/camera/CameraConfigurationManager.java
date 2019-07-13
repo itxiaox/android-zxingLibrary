@@ -17,6 +17,7 @@
 package com.uuzuche.lib_zxing.camera;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.Build;
@@ -40,6 +41,7 @@ final class CameraConfigurationManager {
     private Point cameraResolution;
     private int previewFormat;
     private String previewFormatString;
+    private int orientation;
 
     CameraConfigurationManager(Context context) {
         this.context = context;
@@ -57,7 +59,7 @@ final class CameraConfigurationManager {
         Display display = manager.getDefaultDisplay();
         screenResolution = new Point(display.getWidth(), display.getHeight());
         Log.d(TAG, "Screen resolution: " + screenResolution);
-
+        orientation = context.getResources().getConfiguration().orientation;
         Point screenResolutionForCamera = new Point();
         screenResolutionForCamera.x = screenResolution.x;
         screenResolutionForCamera.y = screenResolution.y;
@@ -80,6 +82,10 @@ final class CameraConfigurationManager {
      * and the planar Y can be used for barcode scanning without a copy in some cases.
      */
     void setDesiredCameraParameters(Camera camera) {
+        //屏幕出现了旋转,重新设置扫码框尺寸
+        if(orientation!=context.getResources().getConfiguration().orientation){
+           initFromCameraParameters(camera);
+        }
         Camera.Parameters parameters = camera.getParameters();
         Log.d(TAG, "Setting preview size: " + cameraResolution);
         parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
@@ -87,7 +93,10 @@ final class CameraConfigurationManager {
         setZoom(parameters);
         //setSharpness(parameters);
         //modify here
-        camera.setDisplayOrientation(90);
+        //竖屏的时候需要旋转90度，横屏不需要旋转
+        if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            camera.setDisplayOrientation(90);
+        }
         camera.setParameters(parameters);
     }
 
